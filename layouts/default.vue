@@ -1,55 +1,57 @@
 <template>
-  <div>
-    <nuxt />
+  <div class="tw-flex tw-flex-col tw-h-full">
+    <div v-show="isWaiting" class="ui segment app-loading">
+      <div class="ui active dimmer">
+        <div class="ui loader"></div>
+      </div>
+    </div>
+    <div class="tw-flex tw-flex-col tw-h-full tw-bg-white">
+      <ActionBar></ActionBar>
+      <div class="tw-flex-1 tw-p-4 tw-overflow-auto">
+        <nuxt />
+      </div>
+      <TabBar></TabBar>
+    </div>
   </div>
 </template>
+<script>
+import { mapState, mapMutations, mapActions } from "vuex";
+import ActionBar from "~/components/ActionBar.vue";
+import Logo from "~/components/Logo.vue";
+import TabBar from "~/components/TabBar.vue";
+import { ACTION, MUTATION } from "~/store/enums.js";
 
-<style>
-html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  margin: 0;
-}
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
-</style>
+export default {
+  components: {
+    Logo,
+    ActionBar,
+    TabBar
+  },
+  data() {
+    if(process.browser) {
+      window.showWaiting = this.showWaiting;
+      window.hideWaiting = this.hideWaiting;
+      this.showWaiting();
+    }
+    return {
+      initLoad: true
+    };
+  },
+  computed: mapState(["isWaiting"]),
+  methods: {
+    ...mapMutations(["showWaiting", "hideWaiting"]),
+    ...mapActions([])
+  },
+  beforeRouteEnter(to, from, next) {
+    console.log("beforeRouteEnter");
+    next();
+  },
+  mounted() {
+  },
+  watch: {
+    $route () {
+      // this.showWaiting();
+    }
+  }
+};
+</script>

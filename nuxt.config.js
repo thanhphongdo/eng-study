@@ -23,11 +23,17 @@ export default {
   ** Global CSS
   */
   css: [
+    '~/assets/tailwindcss/dist/tailwind.min.css',
+    '~/assets/semantic/dist/semantic.min.css',
+    '~/assets/main/main.css'
   ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~/plugins/directives.js',
+    { src: '~/assets/jquery/dist/jquery.min.js', ssr: false },
+    { src: '~/assets/semantic/dist/semantic.min.js', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -50,5 +56,9 @@ export default {
     */
     extend (config, ctx) {
     }
+  },
+  router: {
+    // middleware: ['i18n']
+    base: '/EngStudyWeb3/'
   }
 }
